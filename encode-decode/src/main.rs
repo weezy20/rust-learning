@@ -1,13 +1,16 @@
-const ALPHABET_SIZE: u32 = 26;
-
 fn main() {
+    let action = scan_stdin_line();
     let message = scan_stdin_line();
-    let key = scan_stdin_line().parse::<u32>().unwrap();
-    let encoded_messsage = encode(message, key);
+    let key = scan_stdin_line().parse::<i32>().unwrap();
+    let encoded_messsage = match action.as_str() {
+        "enc" => encode_decode(message, key),
+        "dec" => encode_decode(message, -key),
+        _ => String::new()
+    };
     println!("{}", encoded_messsage);
 }
 
-fn encode(msg: String, key: u32) -> String {
+fn encode_decode(msg: String, key: i32) -> String {
     let mut encoded = String::new();
     for c in msg.chars().into_iter() {
         let new_char = shift(c, key);
@@ -16,14 +19,11 @@ fn encode(msg: String, key: u32) -> String {
     encoded
 }
 
-fn shift(item: char, key: u32) -> char {
-    if !item.is_alphabetic() {
-        return item;
-    }
-    let starting_letter = 'a' as u32;
-    let actual_position = item as u32 - starting_letter;
-    let new_shift = (actual_position + key) % ALPHABET_SIZE;
-    std::char::from_u32(starting_letter + new_shift).unwrap()
+fn shift(item: char, key: i32) -> char {
+    let starting_letter = 'a' as i32;
+    let actual_position = item as i32 - starting_letter;
+    let new_shift = actual_position as i32 + key;
+    std::char::from_u32((starting_letter + new_shift) as u32).unwrap()
 }
 
 fn scan_stdin_line() -> String {

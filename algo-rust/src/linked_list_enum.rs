@@ -30,6 +30,15 @@ impl List {
     }
 }
 
+impl Drop for List {
+    fn drop(&mut self) {
+        let mut curr = mem::replace(&mut self.head, Link::Empty);
+        while let Link::Elem(mut nxt) = curr {
+            curr = mem::replace(&mut nxt.next, Link::Empty);
+        }
+    }
+}
+
 enum Link {
     Empty,
     Elem(Box<Node>),
@@ -42,7 +51,7 @@ struct Node {
 
 #[cfg(test)]
 mod tests {
-    use crate::linked_list_enum::{List, Node};
+    use super::List;
 
     #[test]
     fn verify_empty_pop() {

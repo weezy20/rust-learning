@@ -1,4 +1,4 @@
-use algo_rust::linked_list_enum::List;
+use algo_rust::linked_list_generic::List;
 
 fn main() {
     println!("Hello, world with algorithms and data structures!");
